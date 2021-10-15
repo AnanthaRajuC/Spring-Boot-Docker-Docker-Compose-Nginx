@@ -1,0 +1,42 @@
+# Docker compose file reference (https://docs.docker.com/compose/compose-file/)
+version: '3.1'
+
+# Define services
+services:
+    # Load Balancer - nginx
+    nginx-lb:
+        container_name: nginx-lb
+        image: nginx-lb:latest
+      # restart: always
+        ports: 
+            - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+        networks:
+            - music-nw 
+              
+    # Iron Maiden - Back-end spring boot application
+    minivan:
+        container_name: iron_maiden
+        image: iron_maiden:latest
+      # restart: always
+        ports: 
+            - "8081:8081" # Forward the exposed port 8081 on the container to port 8081 on the host machine
+        networks:
+            - music-nw 
+      # depends_on:    
+      #     - nginx-lb
+            
+    # Nightwish - Back-end spring boot application
+    sedan:
+        container_name: nightwish
+        image: nightwish:latest
+      # restart: always
+        ports: 
+            - "8082:8082" # Forward the exposed port 8082 on the container to port 8082 on the host machine
+        networks:
+            - music-nw 
+      # depends_on:    
+      #     - nginx-lb
+  
+networks: 
+    music-nw:            
+        driver: bridge            
